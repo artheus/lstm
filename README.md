@@ -11,7 +11,3 @@ By now, you can `go get github.com/owulveryck/lstm` and then run the example:
 It will train the LSTM and predict every now and then.
 
 TODO: the Gorgonia API has changed, I may need to asjust the solver when the 0.9 will be released
-
-
-
-

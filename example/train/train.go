@@ -8,10 +8,11 @@ import (
 	"io"
 	"log"
 	"os"
+	"sort"
 
+	"github.com/artheus/lstm"
+	"github.com/artheus/lstm/datasetter/char"
 	"github.com/kelseyhightower/envconfig"
-	"github.com/owulveryck/lstm"
-	"github.com/owulveryck/lstm/datasetter/char"
 	G "gorgonia.org/gorgonia"
 )
 
@@ -34,7 +35,9 @@ func newVocabulary(filename string) (vocabulary, error) {
 			}
 			log.Fatal(err)
 		} else {
-			vocab[c] = struct{}{}
+			if _, ok := vocab[c]; !ok {
+				vocab[c] = struct{}{}
+			}
 		}
 	}
 	output := make([]rune, len(vocab))
@@ -43,6 +46,12 @@ func newVocabulary(filename string) (vocabulary, error) {
 		output[i] = rne
 		i++
 	}
+
+	// sorted vocab just looks nicer, no? :P
+	sort.Slice(output, func(i, j int) bool {
+		return output[i] < output[j]
+	})
+
 	return output, nil
 
 }
@@ -82,6 +91,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Printf("%s\n", string(vocab))
+
 	vocabSize := len(vocab)
 	model := lstm.NewModel(vocabSize, vocabSize, 100)
 	learnrate := 1e-3

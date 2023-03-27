@@ -53,7 +53,7 @@ func TestCost(t *testing.T) {
 		if err := machine.RunAll(); err != nil {
 			t.Fatalf("Pass: %v, error: %v", i, err)
 		}
-		solver.Step(G.Nodes{l.biasC, l.biasF, l.biasI, l.biasO, l.biasY,
+		solver.Step([]G.ValueGrad{l.biasC, l.biasF, l.biasI, l.biasO, l.biasY,
 			l.uc, l.uf, l.ui, l.uo,
 			l.wc, l.wf, l.wi, l.wo, l.wy})
 		copy(hiddenT.Data().([]float32), hidden.Value().Data().([]float32))
